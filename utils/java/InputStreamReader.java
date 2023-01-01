@@ -8,6 +8,7 @@ import java.io.Reader;
 
 public class InputStreamReader extends Reader {
     private final java.io.InputStreamReader streamReader;
+    private final TimeChecker timeChecker;
 
     public InputStreamReader(InputStream in) throws IOException {
         String filePath = System.getProperty("sun.java.command").replaceAll("\\.", "/") + ".txt";
@@ -16,6 +17,9 @@ public class InputStreamReader extends Reader {
         streamReader = new java.io.InputStreamReader(fileInputStream);
 
         System.setIn(fileInputStream);
+
+        timeChecker = new TimeChecker();
+        timeChecker.run();
     }
 
     private File getAbsoluteResourceFile(String filePath) throws IOException {
@@ -34,5 +38,8 @@ public class InputStreamReader extends Reader {
     @Override
     public void close() throws IOException {
         streamReader.close();
+
+        timeChecker.stop();
+        timeChecker.print();
     }
 }
