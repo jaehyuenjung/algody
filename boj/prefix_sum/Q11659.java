@@ -8,6 +8,7 @@ import utils.java.InputStreamReader;
 public class Q11659 {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringBuilder sb = new StringBuilder();
 
         int n = nextInt(br);
         int m = nextInt(br);
@@ -21,9 +22,10 @@ public class Q11659 {
         while(m-- > 0){
             int i = nextInt(br);
             int j = nextInt(br);
-            System.out.println(dp[j] - dp[i - 1]);
+            sb.append(dp[j] - dp[i - 1]).append("\n");
         }
 
+        System.out.print(sb);
         br.close();
     }
 
