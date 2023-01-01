@@ -14,6 +14,8 @@ public class InputStreamReader extends Reader {
 
         FileInputStream fileInputStream = new FileInputStream(getAbsoluteResourceFile(filePath));
         streamReader = new java.io.InputStreamReader(fileInputStream);
+
+        System.setIn(fileInputStream);
     }
 
     private File getAbsoluteResourceFile(String filePath) throws IOException {
