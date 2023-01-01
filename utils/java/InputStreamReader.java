@@ -10,15 +10,14 @@ public class InputStreamReader extends Reader {
     private final java.io.InputStreamReader streamReader;
 
     public InputStreamReader(InputStream in) throws IOException {
-        String filePath = getClass().getClassLoader()
-                .getResource(System.getProperty("sun.java.command").replaceAll("\\.", "/") + ".txt").getFile();
+        String filePath = System.getProperty("sun.java.command").replaceAll("\\.", "/") + ".txt";
 
         FileInputStream fileInputStream = new FileInputStream(getAbsoluteResourceFile(filePath));
         streamReader = new java.io.InputStreamReader(fileInputStream);
     }
 
     private File getAbsoluteResourceFile(String filePath) throws IOException {
-        File file = new File(filePath);
+        File file = new File(getClass().getClassLoader().getResource(filePath).getPath());
         if(!file.exists()){
             file.createNewFile();
         }
