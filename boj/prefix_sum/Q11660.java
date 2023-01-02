@@ -16,7 +16,7 @@ public class Q11660 {
         int[][] dp = new int[n + 1][n + 1];
         for (int i = 1; i <= n; i++) {
             for (int j = 1; j <= n; j++) {
-                dp[i][j] = dp[i][j - 1] + nextInt(br);
+                dp[i][j] = dp[i - 1][j] + dp[i][j - 1] - dp[i - 1][j - 1] + nextInt(br);
             }
         }
 
@@ -24,11 +24,7 @@ public class Q11660 {
             int x1 = nextInt(br), y1 = nextInt(br);
             int x2 = nextInt(br), y2 = nextInt(br);
 
-            int answer = 0;
-            for(int x = x1; x <= x2; x++){
-                answer += dp[x][y2] - dp[x][y1 - 1];
-            }
-            sb.append(answer).append("\n");
+            sb.append(dp[x2][y2] - dp[x1-1][y2] - dp[x2][y1-1] + dp[x1-1][y1-1]).append("\n");
         }
 
         System.out.print(sb);
