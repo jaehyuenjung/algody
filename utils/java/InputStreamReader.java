@@ -11,13 +11,23 @@ public class InputStreamReader extends Reader {
     private final java.io.InputStreamReader streamReader;
     private final TimeChecker timeChecker;
 
+    private boolean isNewOrEmptyFile;
+
     public InputStreamReader(InputStream in) throws IOException {
         String filePath = System.getProperty("sun.java.command").replaceAll("\\.", "/") + ".txt";
 
-        FileInputStream fileInputStream = new FileInputStream(getAbsoluteResourceFile(filePath));
-        streamReader = new java.io.InputStreamReader(fileInputStream);
+        File resourceFile = getAbsoluteResourceFile(filePath);
 
-        System.setIn(fileInputStream);
+        if (isNewOrEmptyFile) {
+            streamReader = new java.io.InputStreamReader(System.in);
+
+            System.out.println("*** 입력 파일이 없거나 비어있어서 표준 입력 모드로 전환합니다. ***");
+        } else {
+            FileInputStream fileInputStream = new FileInputStream(resourceFile);
+            streamReader = new java.io.InputStreamReader(fileInputStream);
+
+            System.setIn(fileInputStream);
+        }
 
         timeChecker = new TimeChecker();
         timeChecker.run();
@@ -39,6 +49,10 @@ public class InputStreamReader extends Reader {
             System.out.println("*** 입력 파일이 없어서 생성합니다. ***");
 
             file = new File(resourcePath + filePath);
+        } finally {
+            if (file.length() == 0) {
+                isNewOrEmptyFile = true;
+            }
         }
         return file;
     }
