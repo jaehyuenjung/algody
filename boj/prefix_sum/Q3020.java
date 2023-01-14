@@ -14,10 +14,9 @@ public class Q3020 {
 
         int[] cntT = new int[h + 1], cntB = new int[h + 1];
 
-        for(int i = 0; i < n; i++){
-            int vlu = nextInt(br);
-            if(i % 2 == 0) cntB[vlu]++;
-            else cntT[vlu]++;
+        for(int i = 0; i < n / 2; i++){
+            cntB[nextInt(br)]++;
+            cntT[nextInt(br)]++;
         }
 
         int[] dpT = new int[h + 1], dpB = new int[h + 1];
