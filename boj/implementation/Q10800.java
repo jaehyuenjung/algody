@@ -3,7 +3,7 @@ package boj.implementation;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.Arrays;
+import java.util.ArrayList;
 import utils.java.InputStreamReader;
 
 public class Q10800 {
@@ -13,30 +13,26 @@ public class Q10800 {
 
         int n = nextInt(br);
 
-        Ball[] balls = new Ball[n + 1];
-        balls[0] = new Ball(0, 0, 0);
-        for (int i = 1; i <= n; i++) {
-            balls[i] = new Ball(i, nextInt(br), nextInt(br));
+        ArrayList<ArrayList<Ball>> sortedBalls = new ArrayList<>(2000 + 1);
+        for(int i = 0; i <= 2000; i++){
+            sortedBalls.add(new ArrayList<>());
         }
 
-        Arrays.sort(balls);
+        for (int i = 1; i <= n; i++) {
+            int c = nextInt(br), s = nextInt(br);
+            sortedBalls.get(s).add(new Ball(i, c));
+        }
 
         int sum = 0;
         int[] dp = new int[n + 1];
-        int[] dpp = new int[200_000 + 1];
         int[] answer = new int[n + 1];
-        for (int i = 1; i <= n; i++) {
-            int preId = balls[i - 1].id, curId = balls[i].id;
-            int preColor = balls[i - 1].color, curColor = balls[i].color;
-            int preSize = balls[i - 1].size, curSize = balls[i].size;
-
-            sum += curSize;
-            dp[curColor] += curSize;
-            dpp[curSize] += curSize;
-
-            answer[curId] = sum - dp[curColor] - dpp[curSize] + curSize;
-            if(curSize == preSize && curColor == preColor){
-                answer[curId] = answer[preId];
+        for (int i = 1; i <= 2000; i++) {
+            for(Ball b : sortedBalls.get(i)){
+                answer[b.id] = sum - dp[b.color];
+            }
+            sum += sortedBalls.get(i).size() * i;
+            for(Ball b : sortedBalls.get(i)){
+                dp[b.color] += i;
             }
         }
 
@@ -61,21 +57,13 @@ public class Q10800 {
         return 47 < c && c < 58;
     }
 
-    static class Ball implements Comparable<Ball> {
+    static class Ball {
         int id;
         int color;
-        int size;
 
-        public Ball(int id, int color, int size) {
+        public Ball(int id, int color) {
             this.id = id;
             this.color = color;
-            this.size = size;
-        }
-
-        @Override
-        public int compareTo(Ball other) {
-            if (size == other.size) return color - other.color;
-            return size - other.size;
         }
     }
 }
