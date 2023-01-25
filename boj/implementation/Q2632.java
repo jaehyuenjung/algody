@@ -3,8 +3,6 @@ package boj.implementation;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.HashMap;
-import java.util.Map;
 import utils.java.InputStreamReader;
 
 public class Q2632 {
@@ -25,59 +23,38 @@ public class Q2632 {
             arrB[i] = nextInt(br);
         }
 
-        Map<Integer, Integer> mapA = getMap(arrA, t);
-        Map<Integer, Integer> mapB = getMap(arrB, t);
+        int[] sumA = getSum(arrA);
+        int[] sumB = getSum(arrB);
 
         int answer = 0;
 
-        for (int v : mapA.keySet()) {
-            if(mapB.containsKey(t - v)) {
-                answer += mapA.get(v) * mapB.get(t - v);
-            }
-        }
-
-        if(mapA.containsKey(t)){
-            answer += mapA.get(t);
-        }
-        if(mapB.containsKey(t)){
-            answer += mapB.get(t);
+        for (int i = 0; i <= t; i++) {
+            answer += sumA[i] * sumB[t - i];
         }
 
         System.out.println(answer);
         br.close();
     }
 
-    static Map<Integer, Integer> getMap(int[] arr, int t) {
-        Map<Integer, Integer> map = new HashMap<>();
+    static int[] getSum(int[] arr) {
+        int[] rlt = new int[1_000_000 + 1];
+        rlt[0] = 1;
 
-        int low = 0, high = 0;
-        int total = 0;
-        while (low < arr.length) {
-            total += arr[high++];
-
-            if (total <= t) {
-                if(map.containsKey(total)){
-                    map.put(total, map.get(total) + 1);
-                }else{
-                    map.put(total, 1);
-                }
-            } else {
-                low++;
-                high = low;
-                total = 0;
-            }
-
-            if (high == arr.length) {
-                high = 0;
-            }
-
-            if ((low == 0 && high == 0) || high + 1 == low) {
-                low++;
-                high = low;
-                total = 0;
+        for (int i = 0; i < arr.length; i++) {
+            int p = i, sum = 0;
+            for (int j = 0; j < arr.length - 1; j++, p = (p + 1) % arr.length) {
+                sum += arr[p];
+                rlt[sum]++;
             }
         }
-        return map;
+
+        int sum = 0;
+        for (int i = 0; i < arr.length; i++) {
+            sum += arr[i];
+        }
+        rlt[sum]++;
+
+        return rlt;
     }
 
     static int nextInt(Reader reader) throws IOException {
