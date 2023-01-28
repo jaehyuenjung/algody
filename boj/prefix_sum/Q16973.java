@@ -66,20 +66,12 @@ public class Q16973 {
     }
 
     static boolean isValidGrid(int[][] dp, int r, int c, int h, int w, int n, int m) {
-        int[] pr = {0, 0, h - 1, h - 1};
-        int[] pc = {0, w - 1, w - 1, 0};
+        int sr = r, sc = c;
+        int fr = r + h - 1, fc = c + w - 1;
 
-        for (int i = 0; i < 4; i++) {
-            int rr = r + pr[i], cc = c + pc[i];
-
-            if (rr < 1 || rr > n || cc < 1 || cc > m) {
-                return false;
-            }
-        }
-
-        int sr = r + pr[0], sc = c + pc[0];
-        int fr = r + pr[2], fc = c + pc[2];
-        if (dp[fr][fc] - dp[fr][sc - 1] - dp[sr - 1][fc]
+        if (sr < 1 || sr > n || sc < 1 || sc > m
+                || fr < 1 || fr > n || fc < 1 || fc > m
+                || dp[fr][fc] - dp[fr][sc - 1] - dp[sr - 1][fc]
                 + dp[sr - 1][sc - 1] > 0) {
             return false;
         }
