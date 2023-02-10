@@ -12,79 +12,155 @@ public class Q14500 {
         int n = nextInt(br);
         int m = nextInt(br);
 
-        int[][] map = new int[n][m];
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
+        int[][] map = new int[n + 6][m + 6];
+        for (int i = 3; i < n + 3; i++) {
+            for (int j = 3; j < m + 3; j++) {
                 map[i][j] = nextInt(br);
             }
         }
 
-        int[] dr = {-1, 0, 1, 0};
-        int[] dc = {0, 1, 0, -1};
-
         int answer = 0;
 
-        boolean[][] visited = new boolean[n][m];
+        for (int i = 3; i < n + 3; i++) {
+            for (int j = 3; j < m + 3; j++) {
+                int sum = 0;
 
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
-                answer = Math.max(answer, dfs(i, j, 1, n, m, dr, dc, visited, map));
+                sum += map[i][j];
+                sum += map[i + 1][j];
+                sum += map[i + 2][j];
+                sum += map[i + 3][j];
+                answer = Math.max(answer, sum);
 
-                int cnt = 0;
-                int sum = map[i][j];
-                for (int k = 0; k < 4; k++) {
-                    int rr = i + dr[k], cc = j + dc[k];
+                sum = 0;
+                sum += map[i][j];
+                sum += map[i][j + 1];
+                sum += map[i][j + 2];
+                sum += map[i][j + 3];
+                answer = Math.max(answer, sum);
 
-                    if (rr < 0 || rr >= n || cc < 0 || cc >= m) {
-                        continue;
-                    }
+                sum = 0;
+                sum += map[i][j];
+                sum += map[i + 1][j];
+                sum += map[i + 1][j + 1];
+                sum += map[i][j + 1];
+                answer = Math.max(answer, sum);
 
-                    sum += map[rr][cc];
-                    cnt++;
-                }
+                sum = 0;
+                sum += map[i][j];
+                sum += map[i + 1][j];
+                sum += map[i + 2][j];
+                sum += map[i + 2][j + 1];
+                answer = Math.max(answer, sum);
 
-                int maxRlt = 0;
+                sum = 0;
+                sum += map[i][j + 1];
+                sum += map[i + 1][j + 1];
+                sum += map[i + 2][j + 1];
+                sum += map[i + 2][j];
+                answer = Math.max(answer, sum);
 
-                if (cnt == 4) {
-                    for (int k = 0; k < 4; k++) {
-                        int rr = i + dr[k], cc = j + dc[k];
+                sum = 0;
+                sum += map[i][j];
+                sum += map[i + 1][j];
+                sum += map[i][j + 1];
+                sum += map[i][j + 2];
+                answer = Math.max(answer, sum);
 
-                        maxRlt = Math.max(maxRlt, sum - map[rr][cc]);
-                    }
-                } else if (cnt == 3) {
-                    maxRlt = sum;
-                }
+                sum = 0;
+                sum += map[i][j];
+                sum += map[i + 1][j + 2];
+                sum += map[i][j + 1];
+                sum += map[i][j + 2];
+                answer = Math.max(answer, sum);
 
-                answer = Math.max(answer, maxRlt);
+                sum = 0;
+                sum += map[i][j];
+                sum += map[i][j + 1];
+                sum += map[i + 1][j + 1];
+                sum += map[i + 2][j + 1];
+                answer = Math.max(answer, sum);
+
+                sum = 0;
+                sum += map[i][j];
+                sum += map[i][j + 1];
+                sum += map[i + 1][j];
+                sum += map[i + 2][j];
+                answer = Math.max(answer, sum);
+
+                sum = 0;
+                sum += map[i][j + 2];
+                sum += map[i + 1][j + 2];
+                sum += map[i + 1][j + 1];
+                sum += map[i + 1][j];
+                answer = Math.max(answer, sum);
+
+                sum = 0;
+                sum += map[i + 1][j + 2];
+                sum += map[i + 1][j + 1];
+                sum += map[i + 1][j];
+                sum += map[i][j];
+                answer = Math.max(answer, sum);
+
+                sum = 0;
+                sum += map[i][j];
+                sum += map[i + 1][j];
+                sum += map[i + 1][j + 1];
+                sum += map[i + 2][j + 1];
+                answer = Math.max(answer, sum);
+
+                sum = 0;
+                sum += map[i][j + 2];
+                sum += map[i][j + 1];
+                sum += map[i + 1][j + 1];
+                sum += map[i + 1][j];
+                answer = Math.max(answer, sum);
+
+                sum = 0;
+                sum += map[i + 2][j];
+                sum += map[i + 1][j];
+                sum += map[i + 1][j + 1];
+                sum += map[i][j + 1];
+                answer = Math.max(answer, sum);
+
+                sum = 0;
+                sum += map[i][j];
+                sum += map[i][j + 1];
+                sum += map[i + 1][j + 1];
+                sum += map[i + 1][j + 2];
+                answer = Math.max(answer, sum);
+
+                sum = 0;
+                sum += map[i][j];
+                sum += map[i][j + 1];
+                sum += map[i][j + 2];
+                sum += map[i + 1][j + 1];
+                answer = Math.max(answer, sum);
+
+                sum = 0;
+                sum += map[i][j + 1];
+                sum += map[i + 1][j + 1];
+                sum += map[i + 2][j + 1];
+                sum += map[i + 1][j];
+                answer = Math.max(answer, sum);
+
+                sum = 0;
+                sum += map[i + 1][j];
+                sum += map[i + 1][j + 1];
+                sum += map[i + 1][j + 2];
+                sum += map[i][j + 1];
+                answer = Math.max(answer, sum);
+
+                sum = 0;
+                sum += map[i][j];
+                sum += map[i + 1][j];
+                sum += map[i + 2][j];
+                sum += map[i + 1][j + 1];
+                answer = Math.max(answer, sum);
             }
         }
 
         System.out.println(answer);
         br.close();
-    }
-
-    static int dfs(int r, int c, int cnt, int n, int m, int[] dr, int[] dc, boolean[][] visited, int[][] map) {
-        if (cnt == 4) {
-            return map[r][c];
-        }
-
-        visited[r][c] = true;
-
-        int maxRlt = 0;
-
-        for (int i = 0; i < 4; i++) {
-            int rr = r + dr[i], cc = c + dc[i];
-
-            if (rr < 0 || rr >= n || cc < 0 || cc >= m || visited[rr][cc]) {
-                continue;
-            }
-
-            maxRlt = Math.max(maxRlt, dfs(rr, cc, cnt + 1, n, m, dr, dc, visited, map));
-        }
-
-        visited[r][c] = false;
-
-        return map[r][c] + maxRlt;
     }
 
     static int nextInt(Reader reader) throws IOException {
