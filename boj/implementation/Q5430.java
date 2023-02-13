@@ -2,8 +2,6 @@ package boj.implementation;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.Deque;
-import java.util.LinkedList;
 import utils.java.InputStreamReader;
 
 public class Q5430 {
@@ -16,45 +14,50 @@ public class Q5430 {
         while (t-- > 0) {
             String commands = br.readLine();
             int n = Integer.parseInt(br.readLine());
+            String str = br.readLine();
+            String[] arrStr = str.substring(1, str.length() - 1).split(",");
 
-            String arrStr = br.readLine();
+            int[] arr = new int[n];
+            for(int i = 0; i < n; i ++){
+                arr[i] = Integer.valueOf(arrStr[i]);
+            }
 
-            Deque<Integer> dq = new LinkedList<>();
-            for (String s : arrStr.substring(1, arrStr.length() - 1).split(","))
-                if (!s.equals(""))
-                    dq.add(Integer.valueOf(s));
+            int s = 0, e = n - 1, d = 0;
+            int[] dd = {1, -1};
 
-            boolean reverse = false, flag = true;
-
-            for (int i = 0; i < commands.length(); i++) {
+            boolean flag = true;
+            for (int i = 0; i < commands.length() && flag; i++) {
                 char command = commands.charAt(i);
 
-                if (command == 'R') {
-                    reverse = !reverse;
-                } else {
-                    if (dq.size() == 0) {
-                        flag = false;
-                        break;
-                    }
+                switch (command) {
+                    case 'R':
+                        d = (d + 1) % 2;
 
-                    if (reverse) {
-                        dq.removeLast();
-                    } else {
-                        dq.removeFirst();
-                    }
+                        int tmp = s;
+                        s = e;
+                        e = tmp;
+                        break;
+                    case 'D':
+                        if (d == 0 && s > e) {
+                            flag = false;
+                        } else if (d == 1 && s < e) {
+                            flag = false;
+                        }
+                        s += dd[d];
                 }
             }
 
-            if(flag) {
+            if (flag) {
                 sb.append("[");
-                while (!dq.isEmpty()) {
-                    sb.append(reverse ? dq.removeLast() : dq.removeFirst());
-                    if (dq.size() != 0) {
-                        sb.append(',');
+                if((d == 0 && s <= e) || (d == 1 && e <= s)){
+                    while (s != e) {
+                        sb.append(arr[s]).append(",");
+                        s += dd[d];
                     }
+                    sb.append(arr[s]);
                 }
                 sb.append("]\n");
-            }else{
+            } else {
                 sb.append("error\n");
             }
         }
