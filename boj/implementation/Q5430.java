@@ -2,6 +2,7 @@ package boj.implementation;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.Reader;
 import utils.java.InputStreamReader;
 
 public class Q5430 {
@@ -9,17 +10,21 @@ public class Q5430 {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder sb = new StringBuilder();
 
-        int t = Integer.parseInt(br.readLine());
+        int t = nextInt(br);
 
         while (t-- > 0) {
-            String commands = br.readLine();
-            int n = Integer.parseInt(br.readLine());
-            String str = br.readLine();
-            String[] arrStr = str.substring(1, str.length() - 1).split(",");
+            String commands = nextLine(br);
+            int n = nextInt(br);
 
             int[] arr = new int[n];
-            for(int i = 0; i < n; i ++){
-                arr[i] = Integer.valueOf(arrStr[i]);
+
+            nextChar(br);
+            if (n == 0) {
+                nextChar(br);
+            } else {
+                for (int i = 0; i < n; i++) {
+                    arr[i] = nextInt(br);
+                }
             }
 
             int s = 0, e = n - 1, d = 0;
@@ -49,7 +54,7 @@ public class Q5430 {
 
             if (flag) {
                 sb.append("[");
-                if((d == 0 && s <= e) || (d == 1 && e <= s)){
+                if ((d == 0 && s <= e) || (d == 1 && e <= s)) {
                     while (s != e) {
                         sb.append(arr[s]).append(",");
                         s += dd[d];
@@ -64,5 +69,33 @@ public class Q5430 {
 
         System.out.print(sb);
         br.close();
+    }
+
+    static String nextLine(Reader reader) throws IOException {
+        StringBuilder sb = new StringBuilder();
+        int c;
+        while ((c = reader.read()) <= 32);
+        do sb.append((char) c);
+        while ((c = reader.read()) > 32);
+        return sb.toString();
+    }
+
+    static int nextChar(Reader reader) throws IOException {
+        int c;
+        while ((c = reader.read()) <= 32);
+        return c;
+    }
+
+    static int nextInt(Reader reader) throws IOException {
+        int n = 0;
+        int c;
+        while ((c = reader.read()) <= 32 || c >= 58);
+        do n = (n << 3) + (n << 1) + (c & 15);
+        while (isNumber(c = reader.read()));
+        return n;
+    }
+
+    static boolean isNumber(int c) {
+        return 47 < c && c < 58;
     }
 }
