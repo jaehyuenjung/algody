@@ -27,47 +27,31 @@ public class Q3190 {
         }
 
         int answer = 0;
-        boolean[][] visited = new boolean[n + 1][n + 1];
+        int[][] visited = new int[n + 1][n + 1];
 
         Deque<Part> dq = new LinkedList<>();
-        dq.add(new Part(1, 1, 1));
-        visited[1][1] = true;
+        dq.add(new Part(1, 1, 2));
+        dq.add(new Part(1, 1, 2));
+        visited[1][1] = 2;
 
         while (dq.peekFirst().canNextMove(visited, n) && ++answer > 0) {
-            Part cur = dq.peekFirst();
-            visited[cur.r][cur.c] = false;
-
-            Part next = new Part(cur.r, cur.c, cur.d);
-            next.move();
-            visited[next.r][next.c] = true;
-
-            if (apples[next.r][next.c]) {
-                apples[next.r][next.c] = false;
-
-                visited[cur.r][cur.c] = true;
-                dq.addFirst(next);
-            } else {
-                dq.removeFirst();
-                dq.addLast(next);
-
-                int size = dq.size();
-
-                int nextD = next.d;
-                for (int i = 1; i < size; i++) {
-                    cur = dq.removeFirst();
-                    visited[cur.r][cur.c] = false;
-                    cur.move();
-                    int tmp = cur.d;
-                    cur.d = nextD;
-                    nextD = tmp;
-                    visited[cur.r][cur.c] = true;
-                    dq.addLast(cur);
-                }
-            }
+            Part head = dq.peekFirst();
+            head.move();
 
             int d = directions[answer];
             if (d != 0) {
-                next.d = (4 + (next.d + d)) % 4;
+                head.d = (4 + (head.d - 1 + d)) % 4 + 1;
+            }
+            visited[head.r][head.c] = head.d;
+
+            if (apples[head.r][head.c]) {
+                apples[head.r][head.c] = false;
+            } else {
+                Part tail = dq.peekLast();
+
+                visited[tail.r][tail.c] = 0;
+                tail.move();
+                tail.d = visited[tail.r][tail.c];
             }
         }
 
@@ -76,8 +60,8 @@ public class Q3190 {
     }
 
     static class Part {
-        private final static int[] DR = {-1, 0, 1, 0};
-        private final static int[] DC = {0, 1, 0, -1};
+        private final static int[] DR = {0, -1, 0, 1, 0};
+        private final static int[] DC = {0, 0, 1, 0, -1};
 
         int r, c, d;
 
@@ -92,10 +76,10 @@ public class Q3190 {
             this.c += DC[d];
         }
 
-        public boolean canNextMove(boolean[][] visited, int n) {
+        public boolean canNextMove(int[][] visited, int n) {
             int rr = r + DR[d];
             int cc = c + DC[d];
-            return 0 < rr && rr <= n && 0 < cc && cc <= n && !visited[rr][cc];
+            return 0 < rr && rr <= n && 0 < cc && cc <= n && visited[rr][cc] == 0;
         }
     }
 
