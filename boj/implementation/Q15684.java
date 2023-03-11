@@ -22,14 +22,33 @@ public class Q15684 {
             map[a] += (1 << b);
         }
 
-        dfs(0, map);
-
-        if (answer == 300) {
+        if (getPositionChangeNum(map) > 3) {
             System.out.println(-1);
         } else {
-            System.out.println(answer);
+            dfs(0, map);
+            if (answer == 300) {
+                System.out.println(-1);
+            } else {
+                System.out.println(answer);
+            }
         }
         br.close();
+    }
+
+    static int getPositionChangeNum(int[] map) {
+        int num = 0;
+        for (int j = 1; j < n && num <= 3; j++) {
+            int cnt = 0;
+            for (int i = 1; i <= h; i++) {
+                if (((map[i] >> j) & 1) == 1) {
+                    cnt++;
+                }
+            }
+            if ((cnt & 1) == 1) {
+                num++;
+            }
+        }
+        return num;
     }
 
     static void dfs(int cnt, int[] map) {
