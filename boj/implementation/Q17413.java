@@ -2,49 +2,38 @@ package boj.implementation;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.Stack;
 import utils.java.InputStreamReader;
 
 public class Q17413 {
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        StringBuilder sb = new StringBuilder();
 
-        String str = br.readLine();
+        char[] str = br.readLine().toCharArray();
 
-        Stack<Character> s = new Stack<>();
-
-        boolean isReverse = true;
-        for (int i = 0; i < str.length(); i++) {
-            char c = str.charAt(i);
-            if (c == ' ') {
-                while (!s.isEmpty()) {
-                    sb.append(s.pop());
-                }
-                sb.append(c);
-            } else if (c == '<') {
-                while (!s.isEmpty()) {
-                    sb.append(s.pop());
-                }
-                isReverse = false;
-                sb.append(c);
-            } else if (c == '>') {
-                isReverse = true;
-                sb.append(c);
+        int e = 0;
+        while(e < str.length) {
+            char c = str[e];
+            if(c == '<'){
+                while(str[e++] != '>');
             } else {
-                if (isReverse) {
-                    s.push(c);
-                } else {
-                    sb.append(c);
-                }
+                int s = e;
+                while(e < str.length && str[e] != ' ' && str[e] != '<') e++;
+
+                reverse(str, s, e - 1);
+
+                if(e < str.length && str[e] == ' ')e++;
             }
         }
 
-        while (!s.isEmpty()) {
-            sb.append(s.pop());
-        }
-
-        System.out.println(sb);
+        System.out.println(str);
         br.close();
+    }
+
+    static void reverse(char[] str, int s, int e) {
+        while(s < e) {
+            char temp = str[s];
+            str[s++] = str[e];
+            str[e--] = temp;
+        }
     }
 }
